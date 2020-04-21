@@ -1,0 +1,55 @@
+/* Query 1 */ 
+ Top 10 countries in sales
+
+SELECT BillingCountry AS Country, SUM(IL.Quantity*IL.UnitPrice) AS total_sales
+FROM Invoice I
+JOIN InvoiceLine IL
+WHERE I.InvoiceId = IL.InvoiceId
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+
+
+/* Query 2 */ 
+Most popular genre in India
+
+SELECT I.BillingCountry AS Country, G.Name AS Genre, COUNT(*) AS Total
+FROM Invoice AS I
+JOIN InvoiceLine AS IL
+  ON I.InvoiceId = IL.InvoiceId
+JOIN Track AS T
+  ON IL.TrackId = T.TrackId
+JOIN Genre AS G
+  ON T.GenreId = G.GenreId
+WHERE Country = "India"
+GROUP BY Genre
+ORDER BY Total DESC
+LIMIT 5;
+
+
+
+/* Query 3 */ 
+Most sold genre
+
+SELECT
+  g.Name AS genre_type,COUNT(*) AS num_purchases
+FROM Genre G
+JOIN Track T
+  ON g.GenreId = T.GenreId
+JOIN InvoiceLine IL
+  ON T.TrackId = IL.TrackId
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
+
+
+/* Query 4 */ 
+Top 10 sold tracks
+
+SELECT T.Name AS Track, SUM(IL.Quantity*IL.UnitPrice) AS "Total Sales"
+FROM Track AS T
+JOIN InvoiceLine AS IL  
+  ON T.TrackId = IL.TrackId
+GROUP BY 1
+ORDER BY 2 DESC
+LIMIT 10;
